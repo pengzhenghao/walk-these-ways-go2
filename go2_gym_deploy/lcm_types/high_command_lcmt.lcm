@@ -1,0 +1,9 @@
+struct high_command_lcmt
+{
+    double vx;
+    double vy;
+    double vyaw;
+    int64_t timestamp_us;
+    int64_t id;
+    int64_t robot_id;
+}

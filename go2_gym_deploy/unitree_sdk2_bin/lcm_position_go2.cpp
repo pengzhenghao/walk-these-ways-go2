@@ -104,10 +104,10 @@ public:
     void JoystickHandler(const void *message);
     void InitRobotStateClient();
     void activateService(const std::string& serviceName,int activate);
-    void lcm_send();
-    void lcm_receive();
-    void lcm_receive_Handler(const lcm::ReceiveBuffer *rbuf, const std::string & chan, const pd_tau_targets_lcmt* msg);
-    void LowCmdWrite();
+    void lcmFromRobot();
+    void lcmFromPython();
+    void lcmFromPythonLow(const lcm::ReceiveBuffer *rbuf, const std::string & chan, const pd_tau_targets_lcmt* msg);
+    void WriteLow();
     void SetNominalPose();
     int queryServiceStatus(const std::string& serviceName);
 
@@ -194,7 +194,7 @@ void Custom::JoystickHandler(const void *message)
 // -------------------------------------------------------------------------------
 // 线程 1 ： lcm send 线程
 // 此线程作用：实时通过unitree_sdk2读取low_state信号和joystick信号，并发送给lcm中间件
-void Custom::lcm_send(){
+void Custom::lcmFromRobot(){
     // leg_control_lcm_data
     for (int i = 0; i < 12; i++)
     {
@@ -263,14 +263,14 @@ void Custom::lcm_send(){
 // 此线程作用：实时通过lcm中间件读取pytorch神经网络输出的期望关节控制信号（q, qd, kp, kd, tau_ff）
 // 查看 go2_gym_deploy/envs/lcm_agent.py 文件，可以知道：
 // 神经网络只输出期望的q，而kp，kd是可以自定义设置的, qd 和 tau_ff 被设置为0
-void Custom::lcm_receive_Handler(const lcm::ReceiveBuffer *rbuf, const std::string & chan, const pd_tau_targets_lcmt* msg){
+void Custom::lcmFromPythonLow(const lcm::ReceiveBuffer *rbuf, const std::string & chan, const pd_tau_targets_lcmt* msg){
     (void) rbuf;
     (void) chan;
     joint_command_simple = *msg; //接收神经网络输出的关节信号
 }
 
 // 此处参考lcm推荐的标准格式，循环处理，接受lcm消息
-void Custom::lcm_receive(){
+void Custom::lcmFromPython(){
     while(true){
         lc.handle();
     }
@@ -336,7 +336,7 @@ void Custom::SetNominalPose(){
     std::cout<<"SET NOMINAL POSE"<<std::endl;
 }
 
-void Custom::LowCmdWrite(){
+void Custom::WriteLow(){
     motiontime++;
     
     if(_firstRun && leg_control_lcm_data.q[0] != 0){
@@ -436,8 +436,8 @@ void Custom::Init(){
 
     // 这里决定了调用lc.handle()的时候，订阅什么消息，进行什么操作
     // 订阅什么消息："pd_plustau_targets"
-    // 进行什么操作： lcm_receive_Handler
-    lc.subscribe("pd_plustau_targets", &Custom::lcm_receive_Handler, this);
+    // 进行什么操作： lcmFromPythonLow
+    lc.subscribe("pd_plustau_targets", &Custom::lcmFromPythonLow, this);
 
     /*create low_cmd publisher*/
     lowcmd_publisher.reset(new unitree::robot::ChannelPublisher<unitree_go::msg::dds_::LowCmd_>(TOPIC_LOWCMD));
@@ -458,11 +458,14 @@ void Custom::Loop(){
     // 当dt=0.002s
     // ntervalMicrosec = 2000us
     /*lcm send thread*/
-    LcmSendThreadPtr = unitree::common::CreateRecurrentThreadEx("lcm_send_thread", UT_CPU_ID_NONE, dt*1e6, &Custom::lcm_send, this);
+    LcmSendThreadPtr = unitree::common::CreateRecurrentThreadEx("lcm_send_thread", UT_CPU_ID_NONE, dt*1e6,
+                                                                &Custom::lcmFromRobot, this);
     /*lcm receive thread*/
-    LcmRecevThreadPtr = unitree::common::CreateRecurrentThreadEx("lcm_recev_thread", UT_CPU_ID_NONE, dt*1e6, &Custom::lcm_receive, this);
+    LcmRecevThreadPtr = unitree::common::CreateRecurrentThreadEx("lcm_recev_thread", UT_CPU_ID_NONE, dt*1e6,
+                                                                 &Custom::lcmFromPython, this);
     /*low command write thread*/
-    lowCmdWriteThreadPtr = unitree::common::CreateRecurrentThreadEx("dds_write_thread", UT_CPU_ID_NONE, dt*1e6, &Custom::LowCmdWrite, this);
+    lowCmdWriteThreadPtr = unitree::common::CreateRecurrentThreadEx("dds_write_thread", UT_CPU_ID_NONE, dt*1e6,
+                                                                    &Custom::WriteLow, this);
 }
 
 int main(int argc, char **argv)
