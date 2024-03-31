@@ -16,3 +16,6 @@ target_link_libraries(lcm_receive lcm)
 
 # PZH Code:
 add_executable(playground unitree_sdk2_bin/playground.cpp)
+target_link_libraries(playground lcm)
+#add_executable(playground2 unitree_sdk2_bin/playground.cpp)
+#target_link_libraries(playground2 lcm)

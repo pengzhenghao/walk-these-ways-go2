@@ -21,6 +21,13 @@
 #include <unitree/common/time/time_tool.hpp>
 #include <unitree/robot/go2/robot_state/robot_state_client.hpp>
 
+
+// PZH:
+#include <unitree/robot/go2/sport/sport_client.hpp>
+#include <unitree/robot/channel/channel_subscriber.hpp>
+#include <unitree/idl/go2/SportModeState_.hpp>
+#define TOPIC_HIGHSTATE "rt/sportmodestate"
+
 #define TOPIC_LOWCMD "rt/lowcmd"
 #define TOPIC_LOWSTATE "rt/lowstate"
 #define TOPIC_JOYSTICK "rt/wirelesscontroller"
@@ -30,6 +37,42 @@
 constexpr double PosStopF = (2.146E+9f);
 constexpr double VelStopF = (16000.0f);
 
+
+enum test_mode
+{
+    /*---Basic motion---*/
+    normal_stand,
+    balance_stand,
+    velocity_move,
+    trajectory_follow,
+    stand_down,
+    stand_up,
+    damp,
+    recovery_stand,
+    /*---Special motion ---*/
+    sit,
+    rise_sit,
+    stretch,
+    wallow,
+    //content,
+    pose,
+    scrape,
+    front_flip,
+    front_jump,
+    front_pounce,
+    stop_move = 99
+};
+
+
+enum gait_mode
+{
+    idle,
+    trot,
+    run,
+    climb_stair,
+    forwardDownStair,
+    adjust=9
+};
 
 // 无需更改：Unitree 提供的电机校验函数
 uint32_t crc32_core(uint32_t* ptr, uint32_t len)
@@ -106,10 +149,24 @@ public:
     void activateService(const std::string& serviceName,int activate);
     void lcm_send();
     void lcm_receive();
+    void robot_control();
     void lcm_receive_Handler(const lcm::ReceiveBuffer *rbuf, const std::string & chan, const pd_tau_targets_lcmt* msg);
+    void lcm_high_receive_Handler(const lcm::ReceiveBuffer *rbuf, const std::string & chan, const pd_tau_targets_lcmt* msg);
     void LowCmdWrite();
-    void SetNominalPose();
+    void HighCmdWrite();
+    void SetStandUp();
     int queryServiceStatus(const std::string& serviceName);
+
+// PZH:
+void HighStateHandler(const void *message)
+    {
+        state = *(unitree_go::msg::dds_::SportModeState_ *)message;
+
+//        printf(state.position())
+
+//         std::cout << "HIGHSTATE: Position: " << state.position()[0] << ", " << state.position()[1] << ", " << state.position()[2] << std::endl;
+//         std::cout << "HIGHSTATE: IMU rpy: " << state.imu_state().rpy()[0] << ", " << state.imu_state().rpy()[1] << ", " << state.imu_state().rpy()[2] << std::endl;
+    };
 
     leg_control_data_lcmt leg_control_lcm_data = {0};
     state_estimator_lcmt body_state_simple = {0};
@@ -129,6 +186,7 @@ public:
     xKeySwitchUnion key;
     int mode = 0;
     int motiontime = 0;
+    int high_motiontime = 0;
     float dt = 0.002; // unit [second]
     bool _firstRun;
 
@@ -137,6 +195,13 @@ public:
     unitree::common::ThreadPtr LcmSendThreadPtr;
     unitree::common::ThreadPtr LcmRecevThreadPtr;
     unitree::common::ThreadPtr lowCmdWriteThreadPtr;
+    unitree::common::ThreadPtr HighCmdWriteThreadPtr;
+
+// PZH: Sport client
+    unitree_go::msg::dds_::SportModeState_ state;
+    unitree::robot::go2::SportClient sport_client;
+    unitree::robot::ChannelSubscriberPtr<unitree_go::msg::dds_::SportModeState_> suber;
+
 
 };
 
@@ -172,6 +237,7 @@ int Custom::queryServiceStatus(const std::string& serviceName)
     return serviceStatus;
 
 }
+
 
 void Custom::activateService(const std::string& serviceName,int activate)
 {
@@ -254,7 +320,7 @@ void Custom::lcm_send(){
     lc.publish("state_estimator_data", &body_state_simple);
     lc.publish("rc_command", &rc_command);
 
-    // std::cout << "loop: messsages are sending ......" << std::endl;
+    // std::cout << "loop: message is sending ......" << std::endl;
 }
 
 
@@ -266,14 +332,43 @@ void Custom::lcm_send(){
 void Custom::lcm_receive_Handler(const lcm::ReceiveBuffer *rbuf, const std::string & chan, const pd_tau_targets_lcmt* msg){
     (void) rbuf;
     (void) chan;
-    joint_command_simple = *msg; //接收神经网络输出的关节信号
+
+
+    printf("PZH: Received high-level command from Python\n");
+    // TODO(PZH): We should write the high-level command to somebody.
+    // TODO(PZH): We should make another buddy process the high-level command.
+    //    joint_command_simple = *msg; //接收神经网络输出的关节信号
+
 }
+
+void Custom::lcm_high_receive_Handler(const lcm::ReceiveBuffer *rbuf, const std::string & chan, const pd_tau_targets_lcmt* msg){
+    (void) rbuf;
+    (void) chan;
+
+
+    printf("PZH: Received high-level command from Python\n");
+    // TODO(PZH): We should write the high-level command to somebody.
+    // TODO(PZH): We should make another buddy process the high-level command.
+    //    joint_command_simple = *msg; //接收神经网络输出的关节信号
+
+    printf("This function should not be called now as we don't subscribe");
+    sport_client.Move(0.0, 0.0, 0.1);
+
+}
+
+
+
+
 
 // 此处参考lcm推荐的标准格式，循环处理，接受lcm消息
 void Custom::lcm_receive(){
-    while(true){
-        lc.handle();
-    }
+
+    printf("In lcm receive, setting move...\n");
+    sport_client.Move(0.0, 0.0, 0.3);
+
+//    while(true){
+//        lc.handle();
+//    }
 }
 
 
@@ -308,36 +403,139 @@ void Custom::InitLowCmd()
     }
 }
 
-void Custom::SetNominalPose(){
+
+
+void Custom::SetStandUp(){
     // 运行此cpp文件后，不仅是初始化通信
     // 同样会在趴下时的初始化关节角度
     // 将各个电机都设置为位置模式
-    for(int i = 0; i < 12; i++){
-        joint_command_simple.qd_des[i] = 0;
-        joint_command_simple.tau_ff[i] = 0;
-        joint_command_simple.kp[i] = 20;
-        joint_command_simple.kd[i] = 0.5;
-    }
+//    for(int i = 0; i < 12; i++){
+//        joint_command_simple.qd_des[i] = 0;
+//        joint_command_simple.tau_ff[i] = 0;
+//        joint_command_simple.kp[i] = 20;
+//        joint_command_simple.kd[i] = 0.5;
+//    }
+//
+//    // 趴下时的关节角度
+//    joint_command_simple.q_des[0] = -0.3;
+//    joint_command_simple.q_des[1] = 1.2;
+//    joint_command_simple.q_des[2] = -2.721;
+//    joint_command_simple.q_des[3] = 0.3;
+//    joint_command_simple.q_des[4] = 1.2;
+//    joint_command_simple.q_des[5] = -2.721;
+//    joint_command_simple.q_des[6] = -0.3;
+//    joint_command_simple.q_des[7] = 1.2;
+//    joint_command_simple.q_des[8] = -2.721;
+//    joint_command_simple.q_des[9] = 0.3;
+//    joint_command_simple.q_des[10] = 1.2;
+//    joint_command_simple.q_des[11] = -2.721;
 
-    // 趴下时的关节角度
-    joint_command_simple.q_des[0] = -0.3;
-    joint_command_simple.q_des[1] = 1.2;
-    joint_command_simple.q_des[2] = -2.721;
-    joint_command_simple.q_des[3] = 0.3;
-    joint_command_simple.q_des[4] = 1.2;
-    joint_command_simple.q_des[5] = -2.721;
-    joint_command_simple.q_des[6] = -0.3;
-    joint_command_simple.q_des[7] = 1.2;
-    joint_command_simple.q_des[8] = -2.721;
-    joint_command_simple.q_des[9] = 0.3;
-    joint_command_simple.q_des[10] = 1.2;
-    joint_command_simple.q_des[11] = -2.721;
+//    std::cout<<"SET NOMINAL POSE"<<std::endl;
 
-    std::cout<<"SET NOMINAL POSE"<<std::endl;
+    // PZH: Do not use StandUp as it locks the joints. The BalanceStand will enable further movement.
+    //    sport_client.SwitchGait(idle); //idle步态
+    //    sport_client.StandUp(); //站立，关节锁死
+
+    // TODO(PZH): Understand what default values should be used for Euler??
+    sport_client.Euler(0.1, 0.2, 0.3); // 输入参数分别为roll, pitch, yaw角度
+    sport_client.BodyHeight(1.0);      // 机身的相对高度，0对应0.33m
+    sport_client.BalanceStand();       //平衡站立
+
+//    sport_client.StandUp();
+// TODO(PZH): Rename this function
+    printf("PZH: Set state to StandUp\n");
+
 }
 
 void Custom::LowCmdWrite(){
     motiontime++;
+
+    if(_firstRun && leg_control_lcm_data.q[0] != 0){
+        for(int i = 0; i < 12; i++){
+            // 程序首次运行至此的时候
+            // 将当前各关节角度设置为目标角度
+            joint_command_simple.q_des[i] = leg_control_lcm_data.q[i];
+            // 初始化L2+B，防止damping被误触发
+            key.components.Y = 0;
+            key.components.A = 0;
+            key.components.B = 0;
+            key.components.L2 = 0;
+        }
+        _firstRun = false;
+    }
+
+    // 写了一段安全冗余代码
+    // 当roll角超过限制，或pitch角超过限制，或遥控器按下L2+B键
+    // if (  low_state.imu_state().rpy()[0] > 0.5 || low_state.imu_state().rpy()[1] > 0.5 || ((int)key.components.B==1 && (int)key.components.L2==1))
+    if ( std::abs(low_state.imu_state().rpy()[0]) > 0.8 || std::abs(low_state.imu_state().rpy()[1]) > 0.8 || ((int)key.components.B==1 && (int)key.components.L2==1))
+    {
+        for (int i = 0; i < 12; i++){
+            // 进入damping模式
+            low_cmd.motor_cmd()[i].q() = 0;
+            low_cmd.motor_cmd()[i].dq() = 0;
+            low_cmd.motor_cmd()[i].kp() = 0;
+            low_cmd.motor_cmd()[i].kd() = 5;
+            low_cmd.motor_cmd()[i].tau() = 0;
+        }
+        std::cout << "======= Switched to Damping Mode, and the thread is sleeping ========"<<std::endl;
+        sleep(1.5);
+
+        while (true)
+        {
+
+            // sleep(0.1);
+
+            if (((int)key.components.B==1 && (int)key.components.L2==1) ) {
+                // [L2+B] is pressed again
+                std::cout << "======= [L2+B] is pressed again, the script is about to exit========" <<std::endl;
+                exit(0);
+            } else if (((int)key.components.A==1 && (int)key.components.L2==1) ){
+                rsc.ServiceSwitch("sport_mode", 1);
+                std::cout << "======= activate sport_mode service and exit========" <<std::endl;
+                sleep(0.5);
+                exit(0);
+            } else{
+                if (((int)key.components.Y==1 && (int)key.components.L2==1) ){
+                    std::cout << "=======  Switch to Walk These Ways ========"<<std::endl;
+                    std::cout<<"Communicatino is set up successfully" << std::endl;
+                    std::cout<<"LCM <<<------------>>> Unitree SDK2" << std::endl;
+                    std::cout<<"------------------------------------" << std::endl;
+                    std::cout<<"------------------------------------" << std::endl;
+                    std::cout<<"Press L2+B if any unexpected error occurs" << std::endl;
+                    break;
+
+                }else{
+                    std::cout << "======= Press [L2+B] again to exit ========"<<std::endl;
+                    std::cout << "======= Press [L2+Y] again to switch to WTW ========"<<std::endl;
+                    std::cout << "======= Press [L2+A] again to activate sport_mode service========"<<std::endl;
+                    sleep(0.01);
+                }
+
+            }
+
+        }
+
+    }
+    else{
+        for (int i = 0; i < 12; i++){
+            // 在确保安全的前提下，才执行神经网络模型的输出
+            low_cmd.motor_cmd()[i].q() = joint_command_simple.q_des[i];
+            low_cmd.motor_cmd()[i].dq() = joint_command_simple.qd_des[i];
+            low_cmd.motor_cmd()[i].kp() = joint_command_simple.kp[i];
+            low_cmd.motor_cmd()[i].kd() = joint_command_simple.kd[i];
+            low_cmd.motor_cmd()[i].tau() = joint_command_simple.tau_ff[i];
+        }
+    }
+
+    /*此段代码中第一行首先计算了 CRC 校验码。
+    最后一行代码表示调用 lowcmd_publisher的Write()函数将控制命令发送给 Go2 机器人。*/
+    low_cmd.crc() = crc32_core((uint32_t *)&low_cmd, (sizeof(unitree_go::msg::dds_::LowCmd_)>>2)-1);
+    lowcmd_publisher->Write(low_cmd);
+}
+
+
+void Custom::HighCmdWrite(){
+    high_motiontime++;
 
     if(_firstRun && leg_control_lcm_data.q[0] != 0){
         for(int i = 0; i < 12; i++){
@@ -431,23 +629,46 @@ void Custom::LowCmdWrite(){
 
 void Custom::Init(){
     _firstRun = true;
-    InitLowCmd();
-    SetNominalPose();
 
+
+
+    // PZH: Initialize sport client
+    sport_client.SetTimeout(10.0f);
+    sport_client.Init();
+    printf("PZH: SportClient is set up successfully.\n");
+
+    // PZH: Let the dog stand up
+//    InitLowCmd();
+    SetStandUp();
+    printf("PZH: Should already set to stand up\n");
+
+
+    // PZH: Setup LCM listener, listening commands from Python.
     // 这里决定了调用lc.handle()的时候，订阅什么消息，进行什么操作
     // 订阅什么消息："pd_plustau_targets"
     // 进行什么操作： lcm_receive_Handler
-    lc.subscribe("pd_plustau_targets", &Custom::lcm_receive_Handler, this);
+    // PZH: TODO: so we should subscribe to some high-level commend (from python probably) and call relevent
+    //        processor.
+    //    lc.subscribe("pd_plustau_targets", &Custom::lcm_receive_Handler, this);
+// PZH: TODO: We don't use subscription now, just overwrite the lcm_receive to publish highlevel cmd.
+// TODO(PZH): We should use subscription when receiving signal from python.
+//        lc.subscribe("pd_plustau_targets_high", &Custom::lcm_high_receive_Handler, this);
 
+
+    // PZH: Setup LCM publisher, publish the info in robot to Python.
     /*create low_cmd publisher*/
-    lowcmd_publisher.reset(new unitree::robot::ChannelPublisher<unitree_go::msg::dds_::LowCmd_>(TOPIC_LOWCMD));
-    lowcmd_publisher->InitChannel();
+//    lowcmd_publisher.reset(new unitree::robot::ChannelPublisher<unitree_go::msg::dds_::LowCmd_>(TOPIC_LOWCMD));
+//    lowcmd_publisher->InitChannel();
     /*create low_state dds subscriber*/
-    lowstate_subscriber.reset(new unitree::robot::ChannelSubscriber<unitree_go::msg::dds_::LowState_>(TOPIC_LOWSTATE));
-    lowstate_subscriber->InitChannel(std::bind(&Custom::LowStateMessageHandler, this, std::placeholders::_1), 1);
+//    lowstate_subscriber.reset(new unitree::robot::ChannelSubscriber<unitree_go::msg::dds_::LowState_>(TOPIC_LOWSTATE));
+//    lowstate_subscriber->InitChannel(std::bind(&Custom::LowStateMessageHandler, this, std::placeholders::_1), 1);
     /*create joystick dds subscriber*/
-    joystick_suber.reset(new unitree::robot::ChannelSubscriber<unitree_go::msg::dds_::WirelessController_>(TOPIC_JOYSTICK));
-    joystick_suber->InitChannel(std::bind(&Custom::JoystickHandler, this, std::placeholders::_1), 1);
+//    joystick_suber.reset(new unitree::robot::ChannelSubscriber<unitree_go::msg::dds_::WirelessController_>(TOPIC_JOYSTICK));
+//    joystick_suber->InitChannel(std::bind(&Custom::JoystickHandler, this, std::placeholders::_1), 1);
+
+// TODO(PZH): Seems like the high level subscriber is not used in lcm_receive ??
+    suber.reset(new unitree::robot::ChannelSubscriber<unitree_go::msg::dds_::SportModeState_>(TOPIC_HIGHSTATE));
+    suber->InitChannel(std::bind(&Custom::HighStateHandler, this, std::placeholders::_1), 1);
 }
 
 
@@ -457,12 +678,24 @@ void Custom::Loop(){
     // intervalMicrosec : 1微秒 = 0.000001秒
     // 当dt=0.002s
     // ntervalMicrosec = 2000us
+
+
+
     /*lcm send thread*/
     LcmSendThreadPtr = unitree::common::CreateRecurrentThreadEx("lcm_send_thread", UT_CPU_ID_NONE, dt*1e6, &Custom::lcm_send, this);
     /*lcm receive thread*/
-    LcmRecevThreadPtr = unitree::common::CreateRecurrentThreadEx("lcm_recev_thread", UT_CPU_ID_NONE, dt*1e6, &Custom::lcm_receive, this);
+
+    // TODO(PZH): In correct dt
+    float robot_dt = 0.005;
+    LcmRecevThreadPtr = unitree::common::CreateRecurrentThreadEx("lcm_receive_thread", UT_CPU_ID_NONE, robot_dt*1e6, &Custom::lcm_receive, this);
     /*low command write thread*/
-    lowCmdWriteThreadPtr = unitree::common::CreateRecurrentThreadEx("dds_write_thread", UT_CPU_ID_NONE, dt*1e6, &Custom::LowCmdWrite, this);
+//    lowCmdWriteThreadPtr = unitree::common::CreateRecurrentThreadEx("dds_write_thread", UT_CPU_ID_NONE, dt*1e6, &Custom::LowCmdWrite, this);
+//    unitree::common::ThreadPtr threadPtr = unitree::common::CreateRecurrentThread(custom.dt * 1000000, std::bind(&Custom::RobotControl, &custom));
+
+//    float robot_dt = 0.005;      // 控制步长0.001~0.01
+//    lowCmdWriteThreadPtr = unitree::common::CreateRecurrentThreadEx("dds_high_write_thread", UT_CPU_ID_NONE, robot_dt*1e6, &Custom::HighCmdWrite, this);
+
+
 }
 
 int main(int argc, char **argv)
@@ -478,7 +711,7 @@ int main(int argc, char **argv)
 //              << "Caution: The scripts is about to shutdown Unitree sport_mode Service." << std::endl
 //              << "Press Enter to continue..." << std::endl;
 
-    printf("PZH: We will set communication level to HIGH-level.\n");
+    printf("PZH: We will set communication level to HIGH-level. Press Enter to continue...\n");
     std::cin.ignore();
 
     unitree::robot::ChannelFactory::Instance()->Init(0, argv[1]); // 传入本机的网卡地址（PC or Jetson Orin）
@@ -486,6 +719,8 @@ int main(int argc, char **argv)
     Custom custom;
 
     custom.InitRobotStateClient();
+    printf("PZH: Robot State Client is set up successfully.\n");
+
     if(custom.queryServiceStatus("sport_mode"))
     {
         std::cout <<"sport_mode is already activated now" << std::endl
@@ -502,6 +737,9 @@ int main(int argc, char **argv)
     }
 
 
+    custom.queryServiceStatus("sport_mode");
+
+    printf("PZH: Start initializing the communication ...");
     custom.Init();
 
     std::cout<<"Communication is set up successfully" << std::endl;
@@ -511,6 +749,7 @@ int main(int argc, char **argv)
     std::cout<<"Press L2+B if any unexpected error occurs" << std::endl;
 
     custom.Loop();
+    printf("PZH: Communication threads are running ...");
 
     while (true)
     {
