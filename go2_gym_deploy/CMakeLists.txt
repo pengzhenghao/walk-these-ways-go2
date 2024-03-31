@@ -13,3 +13,6 @@ add_executable(lcm_position_go2 unitree_sdk2_bin/lcm_position_go2.cpp)
 target_link_libraries(lcm_position_go2 lcm)
 add_executable(lcm_receive unitree_sdk2_bin/lcm_receive.cpp)
 target_link_libraries(lcm_receive lcm)
+
+# PZH Code:
+add_executable(playground unitree_sdk2_bin/playground.cpp)

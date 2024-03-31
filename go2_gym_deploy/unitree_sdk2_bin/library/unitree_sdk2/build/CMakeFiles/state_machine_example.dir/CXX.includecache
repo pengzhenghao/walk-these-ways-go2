@@ -6,33 +6,33 @@
 
 #IncludeRegexTransform: 
 
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/cfg.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/cfg.hpp
 unitree/common/json/jsonize.hpp
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/unitree/common/json/jsonize.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/unitree/common/json/jsonize.hpp
 vector
 -
 iostream
 -
 
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/comm.h
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/comm.h
 stdint.h
 -
 array
 -
 
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/conversion.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/conversion.hpp
 array
 -
 comm.h
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/comm.h
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/comm.h
 unitree/idl/go2/LowCmd_.hpp
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/unitree/idl/go2/LowCmd_.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/unitree/idl/go2/LowCmd_.hpp
 
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/gamepad.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/gamepad.hpp
 cmath
 -
 
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/main.cpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/main.cpp
 iostream
 -
 sstream
@@ -54,13 +54,13 @@ chrono
 iomanip
 -
 robot_controller.hpp
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/robot_controller.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/robot_controller.hpp
 user_controller.hpp
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/user_controller.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/user_controller.hpp
 robot_interface.hpp
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/robot_interface.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/robot_interface.hpp
 
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/robot_controller.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/robot_controller.hpp
 math.h
 -
 iostream
@@ -88,43 +88,43 @@ future
 algorithm
 -
 unitree/idl/go2/LowState_.hpp
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/unitree/idl/go2/LowState_.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/unitree/idl/go2/LowState_.hpp
 unitree/idl/go2/LowCmd_.hpp
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/unitree/idl/go2/LowCmd_.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/unitree/idl/go2/LowCmd_.hpp
 unitree/common/thread/thread.hpp
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/unitree/common/thread/thread.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/unitree/common/thread/thread.hpp
 unitree/robot/channel/channel_publisher.hpp
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/unitree/robot/channel/channel_publisher.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/unitree/robot/channel/channel_publisher.hpp
 unitree/robot/channel/channel_subscriber.hpp
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/unitree/robot/channel/channel_subscriber.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/unitree/robot/channel/channel_subscriber.hpp
 unitree/common/time/time_tool.hpp
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/unitree/common/time/time_tool.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/unitree/common/time/time_tool.hpp
 state_machine.hpp
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/state_machine.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/state_machine.hpp
 gamepad.hpp
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/gamepad.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/gamepad.hpp
 robot_interface.hpp
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/robot_interface.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/robot_interface.hpp
 
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/robot_interface.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/robot_interface.hpp
 array
 -
 iostream
 -
 comm.h
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/comm.h
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/comm.h
 unitree/idl/go2/LowState_.hpp
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/unitree/idl/go2/LowState_.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/unitree/idl/go2/LowState_.hpp
 unitree/idl/go2/LowCmd_.hpp
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/unitree/idl/go2/LowCmd_.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/unitree/idl/go2/LowCmd_.hpp
 conversion.hpp
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/conversion.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/conversion.hpp
 
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/state_machine.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/state_machine.hpp
 algorithm
 -
 
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/user_controller.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/user_controller.hpp
 array
 -
 vector
@@ -136,9 +136,9 @@ fstream
 string
 -
 robot_interface.hpp
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/robot_interface.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/robot_interface.hpp
 gamepad.hpp
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/gamepad.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/gamepad.hpp
 cfg.hpp
-/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/cfg.hpp
+/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/state_machine/cfg.hpp
 

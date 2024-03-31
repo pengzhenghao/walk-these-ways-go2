@@ -10,6 +10,7 @@ add_executable(test_publisher example/helloworld/publisher.cpp example/helloworl
 add_executable(test_subscriber example/helloworld/subscriber.cpp example/helloworld/HelloWorldData.cpp)
 add_executable(high_follow_sin example/high_level/follow_sin.cpp)
 add_executable(sportmode_test example/high_level/sportmode_test.cpp)
+add_executable(sportmode_pzh example/high_level/sportmode_pzh.cpp)
 add_executable(low_level example/low_level/low_level.cpp)
 add_executable(stand_example_go2 example/low_level/stand_example_go2.cpp)
 add_executable(stand_example_b2  example/low_level/stand_example_b2.cpp)

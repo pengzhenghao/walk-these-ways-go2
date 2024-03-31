@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2
+CMAKE_SOURCE_DIR = /home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build
+CMAKE_BINARY_DIR = /home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/robot_state_client_example.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/robot_state_client_example.dir/flags.make
 
 CMakeFiles/robot_state_client_example.dir/example/client/robot_state_client_example.cpp.o: CMakeFiles/robot_state_client_example.dir/flags.make
 CMakeFiles/robot_state_client_example.dir/example/client/robot_state_client_example.cpp.o: ../example/client/robot_state_client_example.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/robot_state_client_example.dir/example/client/robot_state_client_example.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/robot_state_client_example.dir/example/client/robot_state_client_example.cpp.o -c /home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/client/robot_state_client_example.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/robot_state_client_example.dir/example/client/robot_state_client_example.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/robot_state_client_example.dir/example/client/robot_state_client_example.cpp.o -c /home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/client/robot_state_client_example.cpp
 
 CMakeFiles/robot_state_client_example.dir/example/client/robot_state_client_example.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/robot_state_client_example.dir/example/client/robot_state_client_example.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/client/robot_state_client_example.cpp > CMakeFiles/robot_state_client_example.dir/example/client/robot_state_client_example.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/client/robot_state_client_example.cpp > CMakeFiles/robot_state_client_example.dir/example/client/robot_state_client_example.cpp.i
 
 CMakeFiles/robot_state_client_example.dir/example/client/robot_state_client_example.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/robot_state_client_example.dir/example/client/robot_state_client_example.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/client/robot_state_client_example.cpp -o CMakeFiles/robot_state_client_example.dir/example/client/robot_state_client_example.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/client/robot_state_client_example.cpp -o CMakeFiles/robot_state_client_example.dir/example/client/robot_state_client_example.cpp.s
 
 # Object files for target robot_state_client_example
 robot_state_client_example_OBJECTS = \
@@ -80,7 +80,7 @@ robot_state_client_example_EXTERNAL_OBJECTS =
 robot_state_client_example: CMakeFiles/robot_state_client_example.dir/example/client/robot_state_client_example.cpp.o
 robot_state_client_example: CMakeFiles/robot_state_client_example.dir/build.make
 robot_state_client_example: CMakeFiles/robot_state_client_example.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable robot_state_client_example"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable robot_state_client_example"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/robot_state_client_example.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -93,6 +93,6 @@ CMakeFiles/robot_state_client_example.dir/clean:
 .PHONY : CMakeFiles/robot_state_client_example.dir/clean
 
 CMakeFiles/robot_state_client_example.dir/depend:
-	cd /home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2 /home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2 /home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build /home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build /home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build/CMakeFiles/robot_state_client_example.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2 /home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2 /home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build /home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build /home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build/CMakeFiles/robot_state_client_example.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/robot_state_client_example.dir/depend
 

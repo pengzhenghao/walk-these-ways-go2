@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2
+CMAKE_SOURCE_DIR = /home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build
+CMAKE_BINARY_DIR = /home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build/CMakeFiles /home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build/CMakeFiles /home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 WorkDir=$(cd $(dirname $0); pwd)
-echo "WrokDir=$WorkDir"
+echo "WorkDir=$WorkDir"
 
 Arch=$(uname -m)
 echo "CPU Arch=$Arch"

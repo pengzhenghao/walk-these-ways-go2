@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/wireless/wireless.cpp" "/home/parallels/Projects/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build/CMakeFiles/wireless.dir/example/wireless/wireless.cpp.o"
+  "/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/example/wireless/wireless.cpp" "/home/zhenghao/walk-these-ways-go2/go2_gym_deploy/unitree_sdk2_bin/library/unitree_sdk2/build/CMakeFiles/wireless.dir/example/wireless/wireless.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

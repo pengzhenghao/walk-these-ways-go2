@@ -473,10 +473,12 @@ int main(int argc, char **argv)
         exit(-1);
     }
 
-    std::cout << "Communication level is set to LOW-level." << std::endl
-              << "WARNING: Make sure the robot is hung up." << std::endl
-              << "Caution: The scripts is about to shutdown Unitree sport_mode Service." << std::endl
-              << "Press Enter to continue..." << std::endl;
+//    std::cout << "Communication level is set to LOW-level." << std::endl
+//              << "WARNING: Make sure the robot is hung up." << std::endl
+//              << "Caution: The scripts is about to shutdown Unitree sport_mode Service." << std::endl
+//              << "Press Enter to continue..." << std::endl;
+
+    printf("PZH: We will set communication level to HIGH-level.\n");
     std::cin.ignore();
 
     unitree::robot::ChannelFactory::Instance()->Init(0, argv[1]); // 传入本机的网卡地址（PC or Jetson Orin）
@@ -486,23 +488,23 @@ int main(int argc, char **argv)
     custom.InitRobotStateClient();
     if(custom.queryServiceStatus("sport_mode"))
     {
-        std::cout<<"Trying to deactivate the service: " << "sport_mode" << std::endl;
-        custom.activateService("sport_mode",0);
-        sleep(0.5);
-        if(!custom.queryServiceStatus("sport_mode")){
-            std::cout<<"Trying to deactivate the service: " << "sport_mode" << std::endl;
-        }
-    } else{
-        std::cout <<"sportd_mode is already deactivated now" << std::endl
+        std::cout <<"sport_mode is already activated now" << std::endl
                   <<"next step is setting up communication" << std::endl
                   << "Press Enter to continue..." << std::endl;
         std::cin.ignore();
+    } else{
+        std::cout<<"Trying to ACTIVATE the service: " << "sport_mode" << std::endl;
+        custom.activateService("sport_mode",1);
+        sleep(0.5);
+//        if(custom.queryServiceStatus("sport_mode")){
+//            std::cout<<"Trying to ACTIVATE the service: " << "sport_mode" << std::endl;
+//        }
     }
 
 
     custom.Init();
 
-    std::cout<<"Communicatino is set up successfully" << std::endl;
+    std::cout<<"Communication is set up successfully" << std::endl;
     std::cout<<"LCM <<<------------>>> Unitree SDK2" << std::endl;
     std::cout<<"------------------------------------" << std::endl;
     std::cout<<"------------------------------------" << std::endl;

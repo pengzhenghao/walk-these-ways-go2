@@ -86,3 +86,4 @@ if __name__ == '__main__':
     # default:
     # max_vel=3.5, max_yaw_vel=5.0
     load_and_run_policy(label, experiment_name=experiment_name, max_vel=2.5, max_yaw_vel=5.0)
+    # load_and_run_policy(label, experiment_name=experiment_name, max_vel=0.5, max_yaw_vel=1.0)
