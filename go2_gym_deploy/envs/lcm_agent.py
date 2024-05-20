@@ -225,13 +225,19 @@ class LCMAgent():
     def reset_gait_indices(self):
         self.gait_indices = torch.zeros(self.num_envs, dtype=torch.float)
 
-    def step(self, actions, hard_reset=False):
+    def step(self, actions, hard_reset=False, real_run=False):
         clip_actions = self.cfg["normalization"]["clip_actions"]
         self.last_actions = self.actions[:]
         self.actions = torch.clip(actions[0:1, :], -clip_actions, clip_actions)
-        self.publish_action(self.actions, hard_reset=hard_reset)
+
+
+        if real_run:
+            self.publish_action(self.actions, hard_reset=hard_reset)
+
+
         time.sleep(max(self.dt - (time.time() - self.time), 0))
-        if self.timestep % 100 == 0: print(f'frq: {1 / (time.time() - self.time)} Hz')
+        if self.timestep % 100 == 0:
+            print(f'frq: {1 / (time.time() - self.time)} Hz')
         self.time = time.time()
         obs = self.get_obs()
 
@@ -264,21 +270,21 @@ class LCMAgent():
 
 # 注释掉了下面camera相关代码
 # --------------------------------------------------------------------
-        # images = {'front': self.se.get_camera_front(),
-        #           'bottom': self.se.get_camera_bottom(),
-        #           'rear': self.se.get_camera_rear(),
-        #           'left': self.se.get_camera_left(),
-        #           'right': self.se.get_camera_right()
-        #           }
-        # downscale_factor = 2
-        # temporal_downscale = 3
+        images = {'front': self.se.get_camera_front(),
+                  'bottom': self.se.get_camera_bottom(),
+                  'rear': self.se.get_camera_rear(),
+                  'left': self.se.get_camera_left(),
+                  'right': self.se.get_camera_right()
+                  }
+        downscale_factor = 2
+        temporal_downscale = 3
 
-        # for k, v in images.items():
-        #     if images[k] is not None:
-        #         images[k] = cv2.resize(images[k], dsize=(images[k].shape[0]//downscale_factor, images[k].shape[1]//downscale_factor), interpolation=cv2.INTER_CUBIC)
-        #     if self.timestep % temporal_downscale != 0:
-        #         images[k] = None
-        #print(self.commands)
+        for k, v in images.items():
+            if images[k] is not None:
+                images[k] = cv2.resize(images[k], dsize=(images[k].shape[0]//downscale_factor, images[k].shape[1]//downscale_factor), interpolation=cv2.INTER_CUBIC)
+            if self.timestep % temporal_downscale != 0:
+                images[k] = None
+        print(self.commands)
 
         infos = {"joint_pos": self.dof_pos[np.newaxis, :],
                  "joint_vel": self.dof_vel[np.newaxis, :],

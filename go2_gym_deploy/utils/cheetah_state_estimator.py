@@ -113,12 +113,12 @@ class StateEstimator:
         self.legdata_state_subscription = self.lc.subscribe("leg_control_data", self._legdata_cb)
         self.rc_command_subscription = self.lc.subscribe("rc_command", self._rc_command_cb)
 # --------------------------------------------------------------
-        # if use_cameras:
-        #     for cam_id in [1, 2, 3, 4, 5]:
-        #         self.camera_subscription = self.lc.subscribe(f"camera{cam_id}", self._camera_cb)
-        #     self.camera_names = ["front", "bottom", "left", "right", "rear"]
-        #     for cam_name in self.camera_names:
-        #         self.camera_subscription = self.lc.subscribe(f"rect_image_{cam_name}", self._rect_camera_cb)
+#         if use_cameras:
+#             for cam_id in [1, 2, 3, 4, 5]:
+#                 self.camera_subscription = self.lc.subscribe(f"camera{cam_id}", self._camera_cb)
+#             self.camera_names = ["front", "bottom", "left", "right", "rear"]
+#             for cam_name in self.camera_names:
+#                 self.camera_subscription = self.lc.subscribe(f"rect_image_{cam_name}", self._rect_camera_cb)
         self.camera_image_left = None
         self.camera_image_right = None
         self.camera_image_front = None
@@ -376,8 +376,6 @@ class StateEstimator:
     #     else:
     #         print("Image received from camera with unknown ID#!")
 # --------------------------------------------------
-            
-
     def poll(self, cb=None):
         t = time.time()
         try:
@@ -393,11 +391,12 @@ class StateEstimator:
                     # print(f'waiting for message... Freq {1. / (time.time() - t)} Hz'); t = time.time()
                 #    if cb is not None:
                 #        cb()
-        except KeyboardInterrupt:
+        except Exception as e:
+            print("Error in poll loop: ", e)
             pass
 
     def spin(self):
-        self.run_thread = threading.Thread(target=self.poll, daemon=False)
+        self.run_thread = threading.Thread(target=self.poll, daemon=True)
         self.run_thread.start()
 
     def close(self):

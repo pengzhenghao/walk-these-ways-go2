@@ -124,7 +124,7 @@ class DeploymentRunner:
         return control_obs
 
 
-    def run(self, num_log_steps=1000000000, max_steps=100000000, logging=True):
+    def run(self, num_log_steps=1000000000, max_steps=100000000, logging=True, real_run=False):
         assert self.control_agent_name is not None, "cannot deploy, runner has no control agent!"
         assert self.policy is not None, "cannot deploy, runner has no policy!"
         assert self.command_profile is not None, "cannot deploy, runner has no command profile!"
@@ -147,7 +147,7 @@ class DeploymentRunner:
                 action = self.policy(control_obs, policy_info)
 
                 for agent_name in self.agents.keys():
-                    obs, ret, done, info = self.agents[agent_name].step(action)
+                    obs, ret, done, info = self.agents[agent_name].step(action, real_run=real_run)
 
                     info.update(policy_info)
                     info.update({"observation": obs, "reward": ret, "done": done, "timestep": i,
@@ -222,3 +222,4 @@ class DeploymentRunner:
 
         except KeyboardInterrupt:
             self.logger.save(self.log_filename)
+            print("KeyboardInterrupt: saved log file.")

@@ -13,7 +13,8 @@ import pathlib
 # lcm多播通信的标准格式
 lc = lcm.LCM("udpm://239.255.76.67:7667?ttl=255")
 
-def load_and_run_policy(label, experiment_name, max_vel=1.0, max_yaw_vel=1.0):
+
+def load_and_run_policy(label, experiment_name, max_vel=1.0, max_yaw_vel=1.0, real_run=False):
     # load agent
     dirs = glob.glob(f"../../runs/{label}/*")
     logdir = sorted(dirs)[0]
@@ -57,7 +58,11 @@ def load_and_run_policy(label, experiment_name, max_vel=1.0, max_yaw_vel=1.0):
         max_steps = 10000000
     print(f'max steps {max_steps}')
 
-    deployment_runner.run(max_steps=max_steps, logging=True)
+    deployment_runner.run(max_steps=max_steps, logging=True, real_run=real_run)
+    print("Return from deployment_runner.run()")
+    se.close()
+    print("Return from se.close()")
+
 
 def load_policy(logdir):
     # try ------------------
@@ -78,6 +83,12 @@ def load_policy(logdir):
 
 
 if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--real_run', action='store_true')
+    args = parser.parse_args()
+    real_run = args.real_run
+
     # label = "gait-conditioned-agility/pretrain-v0/train"
     label = "gait-conditioned-agility/pretrain-go2/train"
 
